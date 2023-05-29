@@ -43,14 +43,27 @@ gulp.task('html', function () {
         .pipe(gulp.dest("dist/"));
 });
 
+// Simple script copier to dist
+
+// gulp.task('scripts', function () {
+//     return gulp.src("src/js/**/*.js")
+//         .pipe(gulp.dest("dist/js"))
+//         .pipe(browserSync.stream());
+// });
+
 gulp.task('scripts', function () {
     return gulp.src("src/js/**/*.js")
         .pipe(uglify())
-        .pipe(rename({ suffix: '.min' }))
+        .pipe(rename(function (path) {
+            if (!path.basename.endsWith('.min')) {
+            path.basename += '.min';
+            }
+        }))
         .pipe(gulp.dest("dist/js"))
         .pipe(browserSync.stream());
 });
-
+  
+  
 gulp.task('fonts', function () {
     return gulp.src("src/fonts/**/*")
         .pipe(gulp.dest("dist/fonts"))
